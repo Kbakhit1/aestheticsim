@@ -38,21 +38,24 @@
             print-color-adjust: exact !important;
         }
         
-        /* A4 Page Styling */
+        /* A4 Page Styling - Strict Dimensions to prevent blank pages */
         .page-a4 {
             width: 210mm;
-            min-height: 297mm;
+            height: 297mm;
+            max-height: 297mm;
             margin: 20px auto;
             background: white;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            overflow: hidden;
+            overflow: hidden; /* Prevents spillover */
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
 
         /* Print Settings */
         @media print {
             @page {
-                size: A4;
+                size: A4 portrait;
                 margin: 0;
             }
             body {
@@ -65,10 +68,14 @@
                 box-shadow: none;
                 border: none;
                 page-break-after: always;
-                min-height: 100vh;
+                page-break-inside: avoid;
             }
             .no-print {
                 display: none !important;
+            }
+            /* Hide complex visual filters during PDF generation to keep links clickable */
+            .complex-bg { 
+                display: none !important; 
             }
         }
 
@@ -81,6 +88,21 @@
             background: linear-gradient(to left, #0c4a6e, #0284c7);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+        }
+
+        /* Large touch targets for links */
+        .clickable-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem;
+            border-radius: 0.75rem;
+            transition: background-color 0.2s;
+            text-decoration: none;
+            color: inherit;
+        }
+        .clickable-row:hover {
+            background-color: rgba(255, 255, 255, 0.1);
         }
     </style>
 </head>
@@ -95,61 +117,61 @@
     </div>
 
     <!-- PAGE 1: COVER -->
-    <div class="page-a4 flex flex-col relative bg-pattern">
+    <div class="page-a4 bg-pattern">
         <!-- Header -->
-        <header class="p-12 flex justify-between items-center border-b border-gray-100">
+        <header class="px-12 py-8 flex justify-between items-center border-b border-gray-100 shrink-0">
             <div>
-                <h2 class="text-5xl font-extrabold text-brand-900 tracking-tight">Grow50x<span class="text-brand-500">.ai</span></h2>
-                <p class="text-xl text-gray-500 mt-2 font-semibold">لتقنيات الذكاء الاصطناعي الطبية</p>
+                <h2 class="text-4xl font-extrabold text-brand-900 tracking-tight">Grow50x<span class="text-brand-500">.ai</span></h2>
+                <p class="text-lg text-gray-500 mt-1 font-semibold">لتقنيات الذكاء الاصطناعي الطبية</p>
             </div>
-            <div class="h-24 flex items-center justify-center">
-                <img src="https://myhomeegypt.net/wp-content/uploads/2026/05/Untitled-design-70-scaled.png" alt="AestheticSim Logo" class="h-full object-contain drop-shadow-lg">
+            <div class="h-20 flex items-center justify-center">
+                <img src="https://myhomeegypt.net/wp-content/uploads/2026/05/Untitled-design-70-scaled.png" alt="AestheticSim Logo" class="h-full object-contain drop-shadow-md">
             </div>
         </header>
 
         <!-- Main Content -->
-        <main class="flex-grow flex flex-col justify-center px-16 py-12">
-            <div class="inline-block bg-brand-50 text-brand-600 font-bold px-6 py-3 rounded-full mb-8 w-max border border-brand-100 shadow-sm text-xl">
+        <main class="flex-grow flex flex-col justify-center px-12 py-8">
+            <div class="inline-block bg-brand-50 text-brand-600 font-bold px-6 py-2 rounded-full mb-6 w-max border border-brand-100 shadow-sm text-lg relative z-10">
                 🚀 النظام الذكي الأول لمحاكاة نتائج التجميل
             </div>
-            <h1 class="text-7xl font-black leading-tight mb-8 text-gray-900">
+            <h1 class="text-6xl font-black leading-tight mb-6 text-gray-900 relative z-10">
                 حوّل استشارات مرضاك إلى <span class="gradient-text">حجوزات مؤكدة</span> في 30 ثانية.
             </h1>
-            <p class="text-3xl text-gray-600 mb-10 leading-relaxed font-light">
+            <p class="text-2xl text-gray-600 mb-8 leading-relaxed font-light relative z-10">
                 نظام <strong class="font-bold text-brand-600">AestheticSim</strong> لزراعة الشعر، وتجميل الأسنان، والبشرة.. دع المريض يرى مستقبله الآن.
             </p>
             
             <!-- Hero Graphic (Before/After) -->
-            <div class="w-full h-96 rounded-3xl shadow-2xl overflow-hidden relative border-4 border-white bg-white">
+            <div class="w-full h-80 rounded-3xl shadow-xl overflow-hidden relative border-4 border-white bg-white shrink-0 z-10">
                 <img src="https://myhomeegypt.net/wp-content/uploads/2026/05/2026-05-13-162404.png" alt="AestheticSim Before and After" class="w-full h-full object-cover">
-                <div class="absolute bottom-6 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-95 px-8 py-3 rounded-full shadow-xl backdrop-blur-md border border-gray-100 flex items-center gap-3">
-                    <i class="fas fa-magic text-brand-500 text-2xl"></i>
-                    <span class="font-bold text-brand-900 text-xl">نتيجة محاكاة واقعية من النظام</span>
+                <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-white bg-opacity-95 px-6 py-2 rounded-full shadow-lg backdrop-blur-sm border border-gray-100 flex items-center gap-2 w-max">
+                    <i class="fas fa-magic text-brand-500 text-xl"></i>
+                    <span class="font-bold text-brand-900 text-lg">نتيجة محاكاة واقعية من النظام</span>
                 </div>
             </div>
         </main>
 
         <!-- Footer -->
-        <footer class="p-10 text-center">
-            <p class="text-brand-900 font-bold text-2xl bg-brand-50 inline-block px-10 py-4 rounded-full border border-brand-100 shadow-sm">الحل التقني الأمثل لعيادات التجميل المتقدمة</p>
+        <footer class="p-8 text-center shrink-0">
+            <p class="text-brand-900 font-bold text-xl bg-brand-50 inline-block px-8 py-3 rounded-full border border-brand-100 shadow-sm">الحل التقني الأمثل لعيادات التجميل المتقدمة</p>
         </footer>
     </div>
 
     <!-- PAGE 2: PROBLEM & SOLUTION -->
-    <div class="page-a4 flex flex-col bg-white">
-        <header class="bg-brand-900 text-white p-12">
-            <h2 class="text-5xl font-bold">من نحن ولماذا AestheticSim؟</h2>
+    <div class="page-a4 bg-white">
+        <header class="bg-brand-900 text-white px-12 py-10 shrink-0">
+            <h2 class="text-4xl font-bold">من نحن ولماذا AestheticSim؟</h2>
         </header>
 
-        <main class="flex-grow p-14 space-y-14">
+        <main class="flex-grow p-12 flex flex-col justify-center gap-10">
             <!-- About -->
-            <section class="flex gap-8 items-start">
-                <div class="bg-brand-50 text-brand-600 p-6 rounded-2xl text-4xl mt-1">
+            <section class="flex gap-6 items-start">
+                <div class="bg-brand-50 text-brand-600 p-5 rounded-2xl text-3xl mt-1 shrink-0">
                     <i class="fas fa-building"></i>
                 </div>
                 <div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-4">من نحن (Grow50x)</h3>
-                    <p class="text-2xl text-gray-600 leading-relaxed">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-3">من نحن (Grow50x)</h3>
+                    <p class="text-xl text-gray-600 leading-relaxed">
                         نحن شركة تقنية متخصصة في تطوير حلول الذكاء الاصطناعي للمراكز الطبية المتقدمة. هدفنا ليس تقديم برمجيات، بل تقديم أدوات تزيد من نسبة المبيعات وتحسم قرارات المرضى المترددين داخل العيادات.
                     </p>
                 </div>
@@ -158,16 +180,16 @@
             <div class="h-px w-full bg-gray-200"></div>
 
             <!-- Problem -->
-            <section class="flex gap-8 items-start">
-                <div class="bg-red-50 text-red-500 p-6 rounded-2xl text-4xl mt-1">
+            <section class="flex gap-6 items-start">
+                <div class="bg-red-50 text-red-500 p-5 rounded-2xl text-3xl mt-1 shrink-0">
                     <i class="fas fa-exclamation-triangle"></i>
                 </div>
                 <div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-4">المشكلة التي نحلها</h3>
-                    <blockquote class="border-r-4 border-red-500 pr-6 my-6 text-2xl italic text-gray-700 bg-gray-50 py-4 rounded-l-lg font-semibold">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-3">المشكلة التي نحلها</h3>
+                    <blockquote class="border-r-4 border-red-500 pr-5 my-4 text-xl italic text-gray-700 bg-gray-50 py-3 rounded-l-lg font-semibold">
                         "أريد أن أرى كيف سأبدو أنا، وليس كيف يبدو الآخرون!"
                     </blockquote>
-                    <p class="text-2xl text-gray-600 leading-relaxed">
+                    <p class="text-xl text-gray-600 leading-relaxed">
                         أكبر عائق يمنع المريض من إتمام الحجز هو الخوف من النتيجة المجهولة وعدم القدرة على التخيل. مهما عرضت عليه من صور لحالات سابقة، يظل القلق قائماً لأن الملامح تختلف.
                     </p>
                 </div>
@@ -176,13 +198,13 @@
             <div class="h-px w-full bg-gray-200"></div>
 
             <!-- Solution -->
-            <section class="flex gap-8 items-start">
-                <div class="bg-green-50 text-green-600 p-6 rounded-2xl text-4xl mt-1">
+            <section class="flex gap-6 items-start">
+                <div class="bg-green-50 text-green-600 p-5 rounded-2xl text-3xl mt-1 shrink-0">
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-4">الحل مع AestheticSim</h3>
-                    <p class="text-2xl text-gray-600 leading-relaxed">
+                    <h3 class="text-3xl font-bold text-gray-800 mb-3">الحل مع AestheticSim</h3>
+                    <p class="text-xl text-gray-600 leading-relaxed">
                         نظام يعتمد على الذكاء الاصطناعي المتقدم، يتيح لك رفع صورة المريض الحالية، ليقوم النظام بتوليد صورته المتوقعة بعد العلاج بدقة متناهية وفي أقل من <span class="font-bold text-brand-600">30 ثانية</span>.
                     </p>
                 </div>
@@ -191,54 +213,54 @@
     </div>
 
     <!-- PAGE 3: SPECIALTIES -->
-    <div class="page-a4 flex flex-col bg-gray-50">
-        <header class="p-12 border-b border-gray-200 bg-white">
-            <h2 class="text-4xl font-bold text-brand-900 mb-3">التخصصات التي يغطيها النظام</h2>
-            <p class="text-gray-500 text-2xl">23 إجراء تجميلي في 3 تخصصات رئيسية في مكان واحد</p>
+    <div class="page-a4 bg-gray-50">
+        <header class="px-12 py-10 border-b border-gray-200 bg-white shrink-0">
+            <h2 class="text-4xl font-bold text-brand-900 mb-2">التخصصات التي يغطيها النظام</h2>
+            <p class="text-gray-500 text-xl">23 إجراء تجميلي في 3 تخصصات رئيسية في مكان واحد</p>
         </header>
 
-        <main class="p-12 space-y-10">
+        <main class="flex-grow p-12 flex flex-col justify-center gap-8">
             <!-- Hair -->
-            <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 flex gap-8 items-center">
-                <div class="w-28 h-28 bg-orange-100 text-orange-500 rounded-2xl flex items-center justify-center text-5xl shrink-0 shadow-inner">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex gap-6 items-center">
+                <div class="w-24 h-24 bg-orange-100 text-orange-500 rounded-2xl flex items-center justify-center text-4xl shrink-0 shadow-inner">
                     <i class="fas fa-cut"></i>
                 </div>
                 <div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-3">أ. قسم زراعة وعلاج الشعر</h3>
-                    <p class="text-gray-600 mb-4 text-xl">محاكاة واقعية لخط الجبهة (Hairline) والكثافة الجديدة.</p>
-                    <ul class="space-y-3 text-gray-700 text-xl font-semibold">
-                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 text-2xl"></i> عرض تدرج نمو الشعر بعد (3، 6، 10 شهور).</li>
-                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 text-2xl"></i> يدعم تقنيات (FUE, DHI, Sapphire).</li>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">أ. قسم زراعة وعلاج الشعر</h3>
+                    <p class="text-gray-600 mb-3 text-lg">محاكاة واقعية لخط الجبهة (Hairline) والكثافة الجديدة.</p>
+                    <ul class="space-y-2 text-gray-700 text-lg font-semibold">
+                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i> عرض تدرج نمو الشعر بعد (3، 6، 10 شهور).</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i> يدعم تقنيات (FUE, DHI, Sapphire).</li>
                     </ul>
                 </div>
             </div>
 
             <!-- Skin -->
-            <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 flex gap-8 items-center">
-                <div class="w-28 h-28 bg-pink-100 text-pink-500 rounded-2xl flex items-center justify-center text-5xl shrink-0 shadow-inner">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex gap-6 items-center">
+                <div class="w-24 h-24 bg-pink-100 text-pink-500 rounded-2xl flex items-center justify-center text-4xl shrink-0 shadow-inner">
                     <i class="fas fa-spa"></i>
                 </div>
                 <div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-3">ب. قسم تجميل البشرة (Aesthetics)</h3>
-                    <p class="text-gray-600 mb-4 text-xl">إظهار نتائج دقيقة ومبهرة للإجراءات غير الجراحية.</p>
-                    <ul class="space-y-3 text-gray-700 text-xl font-semibold">
-                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 text-2xl"></i> الفيلر والبوتوكس (تحديد الفك، إخفاء التجاعيد).</li>
-                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 text-2xl"></i> شد الوجه (Facelift) وإخفاء الترهلات.</li>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">ب. قسم تجميل البشرة (Aesthetics)</h3>
+                    <p class="text-gray-600 mb-3 text-lg">إظهار نتائج دقيقة ومبهرة للإجراءات غير الجراحية.</p>
+                    <ul class="space-y-2 text-gray-700 text-lg font-semibold">
+                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i> الفيلر والبوتوكس (تحديد الفك، إخفاء التجاعيد).</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i> شد الوجه (Facelift) وإخفاء الترهلات.</li>
                     </ul>
                 </div>
             </div>
 
             <!-- Dental -->
-            <div class="bg-white p-10 rounded-3xl shadow-sm border border-gray-100 flex gap-8 items-center">
-                <div class="w-28 h-28 bg-teal-100 text-teal-500 rounded-2xl flex items-center justify-center text-5xl shrink-0 shadow-inner">
+            <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 flex gap-6 items-center">
+                <div class="w-24 h-24 bg-teal-100 text-teal-500 rounded-2xl flex items-center justify-center text-4xl shrink-0 shadow-inner">
                     <i class="fas fa-tooth"></i>
                 </div>
                 <div>
-                    <h3 class="text-3xl font-bold text-gray-800 mb-3">ج. قسم تجميل الأسنان (Dental)</h3>
-                    <p class="text-gray-600 mb-4 text-xl">ابتسامة المريض الجديدة قبل أن يفتح فمه.</p>
-                    <ul class="space-y-3 text-gray-700 text-xl font-semibold">
-                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 text-2xl"></i> تصميم الابتسامة الرقمي (DSD).</li>
-                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500 text-2xl"></i> محاكاة فينير الأسنان وابتسامة هوليوود.</li>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">ج. قسم تجميل الأسنان (Dental)</h3>
+                    <p class="text-gray-600 mb-3 text-lg">ابتسامة المريض الجديدة قبل أن يفتح فمه.</p>
+                    <ul class="space-y-2 text-gray-700 text-lg font-semibold">
+                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i> تصميم الابتسامة الرقمي (DSD).</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check-circle text-green-500"></i> محاكاة فينير الأسنان وابتسامة هوليوود.</li>
                     </ul>
                 </div>
             </div>
@@ -246,63 +268,63 @@
     </div>
 
     <!-- PAGE 4: HOW IT WORKS & ROI -->
-    <div class="page-a4 flex flex-col bg-white">
-        <main class="p-14">
+    <div class="page-a4 bg-white">
+        <main class="flex-grow p-12 flex flex-col justify-center">
             <!-- How it works -->
-            <section class="mb-16">
-                <h2 class="text-4xl font-bold text-brand-900 mb-8 border-r-8 border-brand-500 pr-6">كيف يعمل النظام؟</h2>
-                <p class="text-2xl text-gray-600 mb-10">3 خطوات بسيطة لا تحتاج لأي خبرة تقنية:</p>
+            <section class="mb-12">
+                <h2 class="text-3xl font-bold text-brand-900 mb-6 border-r-8 border-brand-500 pr-5">كيف يعمل النظام؟</h2>
+                <p class="text-xl text-gray-600 mb-8">3 خطوات بسيطة لا تحتاج لأي خبرة تقنية:</p>
                 
-                <div class="grid grid-cols-3 gap-8">
-                    <div class="text-center p-8 bg-gray-50 rounded-3xl border border-gray-200 shadow-sm">
-                        <div class="w-20 h-20 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">1</div>
-                        <h4 class="font-bold text-2xl mb-3">التقاط الصورة</h4>
-                        <p class="text-lg text-gray-500">التقط صورة بهاتفك وارفعها على النظام.</p>
+                <div class="grid grid-cols-3 gap-6">
+                    <div class="text-center p-6 bg-gray-50 rounded-3xl border border-gray-200 shadow-sm">
+                        <div class="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">1</div>
+                        <h4 class="font-bold text-xl mb-2">التقاط الصورة</h4>
+                        <p class="text-gray-500">التقط صورة بهاتفك وارفعها على النظام.</p>
                     </div>
-                    <div class="text-center p-8 bg-gray-50 rounded-3xl border border-gray-200 shadow-sm">
-                        <div class="w-20 h-20 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">2</div>
-                        <h4 class="font-bold text-2xl mb-3">تحديد الإجراء</h4>
-                        <p class="text-lg text-gray-500">اختر نوع التدخل ومقدار التعديل المطلوب.</p>
+                    <div class="text-center p-6 bg-gray-50 rounded-3xl border border-gray-200 shadow-sm">
+                        <div class="w-16 h-16 bg-brand-100 text-brand-600 rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">2</div>
+                        <h4 class="font-bold text-xl mb-2">تحديد الإجراء</h4>
+                        <p class="text-gray-500">اختر نوع التدخل ومقدار التعديل المطلوب.</p>
                     </div>
-                    <div class="text-center p-8 bg-brand-50 rounded-3xl border border-brand-200 shadow-md transform scale-105">
-                        <div class="w-20 h-20 bg-brand-600 text-white rounded-full flex items-center justify-center text-3xl font-bold mx-auto mb-6">3</div>
-                        <h4 class="font-bold text-brand-900 text-2xl mb-3">النتيجة والتقرير</h4>
-                        <p class="text-lg text-brand-700 font-semibold">في 30 ثانية يصدر تقرير مرئي مخصص.</p>
+                    <div class="text-center p-6 bg-brand-50 rounded-3xl border border-brand-200 shadow-md">
+                        <div class="w-16 h-16 bg-brand-600 text-white rounded-full flex items-center justify-center text-2xl font-bold mx-auto mb-4">3</div>
+                        <h4 class="font-bold text-brand-900 text-xl mb-2">النتيجة والتقرير</h4>
+                        <p class="text-brand-700 font-semibold">في 30 ثانية يصدر تقرير مرئي مخصص.</p>
                     </div>
                 </div>
 
-                <div class="mt-12 bg-yellow-50 border border-yellow-200 p-8 rounded-3xl flex gap-6 items-center shadow-sm">
-                    <i class="fas fa-star text-yellow-500 text-5xl"></i>
+                <div class="mt-10 bg-yellow-50 border border-yellow-200 p-6 rounded-3xl flex gap-5 items-center shadow-sm">
+                    <i class="fas fa-star text-yellow-500 text-4xl"></i>
                     <div>
-                        <h4 class="font-bold text-yellow-800 text-2xl mb-2">ميزة التقرير المخصص (White-Labeling):</h4>
-                        <p class="text-yellow-700 text-xl leading-relaxed">التقرير يحمل <strong>شعار عيادتكم، وألوانكم</strong>، يمكن إرساله فوراً للمريض عبر واتساب لتعزيز احترافية العيادة.</p>
+                        <h4 class="font-bold text-yellow-800 text-xl mb-1">ميزة التقرير المخصص (White-Labeling):</h4>
+                        <p class="text-yellow-700 text-lg leading-relaxed">التقرير يحمل <strong>شعار عيادتكم، وألوانكم</strong>، يمكن إرساله فوراً للمريض عبر واتساب لتعزيز احترافية العيادة.</p>
                     </div>
                 </div>
             </section>
 
             <!-- ROI -->
             <section>
-                <h2 class="text-4xl font-bold text-brand-900 mb-10 border-r-8 border-brand-500 pr-6">العائد على الاستثمار للعيادة</h2>
-                <div class="grid grid-cols-2 gap-8">
-                    <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-4">
-                        <i class="fas fa-chart-line text-brand-500 text-4xl"></i>
-                        <h4 class="font-bold text-2xl text-gray-800">زيادة المبيعات 45%</h4>
-                        <p class="text-gray-600 text-lg">الرؤية البصرية تقضي على التردد وتحول الاستشارة إلى عملية مدفوعة فوراً.</p>
+                <h2 class="text-3xl font-bold text-brand-900 mb-8 border-r-8 border-brand-500 pr-5">العائد على الاستثمار للعيادة</h2>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-3">
+                        <i class="fas fa-chart-line text-brand-500 text-3xl"></i>
+                        <h4 class="font-bold text-xl text-gray-800">زيادة المبيعات 45%</h4>
+                        <p class="text-gray-600">الرؤية البصرية تقضي على التردد وتحول الاستشارة إلى عملية مدفوعة فوراً.</p>
                     </div>
-                    <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-4">
-                        <i class="fas fa-hourglass-half text-brand-500 text-4xl"></i>
-                        <h4 class="font-bold text-2xl text-gray-800">توفير وقت الطبيب</h4>
-                        <p class="text-gray-600 text-lg">تقليل وقت الشرح للإقناع؛ الصورة تغني عن ألف كلمة.</p>
+                    <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-3">
+                        <i class="fas fa-hourglass-half text-brand-500 text-3xl"></i>
+                        <h4 class="font-bold text-xl text-gray-800">توفير وقت الطبيب</h4>
+                        <p class="text-gray-600">تقليل وقت الشرح للإقناع؛ الصورة تغني عن ألف كلمة.</p>
                     </div>
-                    <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-4">
-                        <i class="fas fa-share-alt text-brand-500 text-4xl"></i>
-                        <h4 class="font-bold text-2xl text-gray-800">تسويق مجاني</h4>
-                        <p class="text-gray-600 text-lg">المريض يشارك صوره مع أصدقائه، مما يجلب لك عملاء جدد.</p>
+                    <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-3">
+                        <i class="fas fa-share-alt text-brand-500 text-3xl"></i>
+                        <h4 class="font-bold text-xl text-gray-800">تسويق مجاني</h4>
+                        <p class="text-gray-600">المريض يشارك صوره مع أصدقائه، مما يجلب لك عملاء جدد.</p>
                     </div>
-                    <div class="bg-gray-50 p-8 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-4">
-                        <i class="fas fa-shield-alt text-brand-500 text-4xl"></i>
-                        <h4 class="font-bold text-2xl text-gray-800">إدارة التوقعات</h4>
-                        <p class="text-gray-600 text-lg">حماية العيادة، لأن المريض يرى نتيجة واقعية قبل بدء العلاج.</p>
+                    <div class="bg-gray-50 p-6 rounded-3xl border border-gray-100 shadow-sm flex flex-col gap-3">
+                        <i class="fas fa-shield-alt text-brand-500 text-3xl"></i>
+                        <h4 class="font-bold text-xl text-gray-800">إدارة التوقعات</h4>
+                        <p class="text-gray-600">حماية العيادة، لأن المريض يرى نتيجة واقعية قبل بدء العلاج.</p>
                     </div>
                 </div>
             </section>
@@ -310,71 +332,73 @@
     </div>
 
     <!-- PAGE 5: PRICING & CTA -->
-    <div class="page-a4 flex flex-col bg-brand-900 relative overflow-hidden">
-        <!-- Background Decoration -->
-        <div class="absolute top-0 right-0 w-96 h-96 bg-brand-600 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2"></div>
-        <div class="absolute bottom-0 left-0 w-96 h-96 bg-brand-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2"></div>
+    <div class="page-a4 bg-brand-900 relative">
+        <!-- Background Decoration (Hidden in Print to ensure links work) -->
+        <div class="complex-bg absolute top-0 right-0 w-96 h-96 bg-brand-600 rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+        <div class="complex-bg absolute bottom-0 left-0 w-96 h-96 bg-brand-500 rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
 
-        <main class="flex-grow p-14 relative z-10 flex flex-col justify-between">
-            <div>
-                <header class="text-center mb-16">
-                    <h2 class="text-5xl font-bold text-white mb-6 drop-shadow-md">خطط الأسعار والباقات</h2>
-                    <p class="text-brand-100 text-2xl font-light">باقات مرنة بدون التزامات خفية. تكلفة إقناع المريض لا تتجاوز ثمن فنجان قهوة!</p>
-                </header>
+        <main class="flex-grow p-12 flex flex-col justify-center relative z-10">
+            <header class="text-center mb-10">
+                <h2 class="text-4xl font-bold text-white mb-4 drop-shadow-md">خطط الأسعار والباقات</h2>
+                <p class="text-brand-100 text-xl font-light">باقات مرنة بدون التزامات خفية. تكلفة إقناع المريض لا تتجاوز ثمن فنجان قهوة!</p>
+            </header>
 
-                <div class="grid grid-cols-2 gap-10 mb-16">
-                    <!-- Advanced Plan -->
-                    <div class="bg-white rounded-3xl p-10 shadow-2xl transform hover:-translate-y-1 transition-all">
-                        <h3 class="text-3xl font-bold text-gray-800 mb-4">الباقة المتقدمة</h3>
-                        <div class="text-6xl font-black text-brand-600 mb-8">$100</div>
-                        <ul class="space-y-5 mb-8 text-gray-700 text-xl font-medium">
-                            <li class="flex items-center gap-4"><i class="fas fa-image text-brand-500 text-2xl"></i> رصيد: <strong>200 صورة</strong></li>
-                            <li class="flex items-center gap-4"><i class="fas fa-coins text-brand-500 text-2xl"></i> تكلفة الصورة: <strong>$0.50 فقط</strong></li>
-                            <li class="flex items-center gap-4"><i class="fas fa-check text-green-500 text-2xl"></i> وصول لجميع التخصصات الـ 23</li>
-                            <li class="flex items-center gap-4"><i class="fas fa-check text-green-500 text-2xl"></i> تقارير بشعار العيادة</li>
-                        </ul>
-                    </div>
+            <div class="grid grid-cols-2 gap-8 mb-10">
+                <!-- Advanced Plan -->
+                <div class="bg-white rounded-3xl p-8 shadow-2xl">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">الباقة المتقدمة</h3>
+                    <div class="text-5xl font-black text-brand-600 mb-6">$100</div>
+                    <ul class="space-y-4 mb-6 text-gray-700 text-lg font-medium">
+                        <li class="flex items-center gap-3"><i class="fas fa-image text-brand-500 text-xl"></i> رصيد: <strong>200 صورة</strong></li>
+                        <li class="flex items-center gap-3"><i class="fas fa-coins text-brand-500 text-xl"></i> تكلفة الصورة: <strong>$0.50 فقط</strong></li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-green-500 text-xl"></i> وصول لجميع التخصصات الـ 23</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-green-500 text-xl"></i> تقارير بشعار العيادة</li>
+                    </ul>
+                </div>
 
-                    <!-- Pro Plan -->
-                    <div class="bg-gradient-to-b from-brand-50 to-white rounded-3xl p-10 shadow-2xl border-4 border-brand-400 transform scale-105 relative">
-                        <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white px-6 py-2 rounded-full text-lg font-bold shadow-md tracking-wider">الأكثر طلباً</div>
-                        <h3 class="text-3xl font-bold text-gray-800 mb-4">باقة المحترفين (Pro)</h3>
-                        <div class="text-6xl font-black text-brand-600 mb-8">$150</div>
-                        <ul class="space-y-5 mb-8 text-gray-700 text-xl font-medium">
-                            <li class="flex items-center gap-4"><i class="fas fa-image text-brand-500 text-2xl"></i> رصيد: <strong>350 صورة</strong></li>
-                            <li class="flex items-center gap-4"><i class="fas fa-coins text-brand-500 text-2xl"></i> تكلفة الصورة: <strong>أقل من $0.43</strong></li>
-                            <li class="flex items-center gap-4"><i class="fas fa-check text-green-500 text-2xl"></i> وصول لجميع التخصصات الـ 23</li>
-                            <li class="flex items-center gap-4"><i class="fas fa-bolt text-yellow-500 text-2xl"></i> أولوية المعالجة (سيرفرات مخصصة)</li>
-                        </ul>
-                    </div>
+                <!-- Pro Plan -->
+                <div class="bg-gradient-to-b from-brand-50 to-white rounded-3xl p-8 shadow-2xl border-4 border-brand-400 relative transform scale-105">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-brand-500 text-white px-5 py-1.5 rounded-full text-base font-bold shadow-md tracking-wider">الأكثر طلباً</div>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-3">باقة المحترفين (Pro)</h3>
+                    <div class="text-5xl font-black text-brand-600 mb-6">$150</div>
+                    <ul class="space-y-4 mb-6 text-gray-700 text-lg font-medium">
+                        <li class="flex items-center gap-3"><i class="fas fa-image text-brand-500 text-xl"></i> رصيد: <strong>350 صورة</strong></li>
+                        <li class="flex items-center gap-3"><i class="fas fa-coins text-brand-500 text-xl"></i> تكلفة الصورة: <strong>أقل من $0.43</strong></li>
+                        <li class="flex items-center gap-3"><i class="fas fa-check text-green-500 text-xl"></i> وصول لجميع التخصصات الـ 23</li>
+                        <li class="flex items-center gap-3"><i class="fas fa-bolt text-yellow-500 text-xl"></i> أولوية المعالجة (سيرفرات مخصصة)</li>
+                    </ul>
                 </div>
             </div>
 
-            <!-- CTA & Contact (Clickable Links) -->
-            <div class="bg-white bg-opacity-10 backdrop-blur-xl border border-white border-opacity-30 rounded-3xl p-10 text-center text-white shadow-2xl">
-                <h3 class="text-4xl font-bold mb-6 text-yellow-300">جرب قبل أن تشتري!</h3>
-                <p class="text-2xl mb-10 leading-relaxed font-light">نقدم لعيادتكم الموقرة فترة تجربة مجانية بالكامل لمدة 3 أيام للوقوف على كفاءة النظام عملياً مع مرضاكم.</p>
+            <!-- CTA & Contact (Interactive Clickable Links Area) -->
+            <div class="bg-white bg-opacity-10 border border-white border-opacity-30 rounded-3xl p-8 text-center text-white shadow-2xl">
+                <h3 class="text-3xl font-bold mb-4 text-yellow-300">جرب قبل أن تشتري!</h3>
+                <p class="text-xl mb-6 leading-relaxed font-light">نقدم لعيادتكم الموقرة فترة تجربة مجانية بالكامل لمدة 3 أيام للوقوف على كفاءة النظام عملياً مع مرضاكم.</p>
                 
-                <div class="bg-white text-brand-900 rounded-2xl p-8 inline-block text-right shadow-2xl w-full max-w-3xl">
-                    <p class="font-extrabold text-2xl mb-6 border-b-2 border-gray-100 pb-4 text-center">Grow50x.ai لتقنيات الذكاء الاصطناعي الطبية</p>
+                <div class="bg-white text-brand-900 rounded-2xl p-6 inline-block w-full max-w-3xl shadow-xl relative z-50">
+                    <p class="font-extrabold text-xl mb-5 border-b-2 border-gray-100 pb-3 text-center">Grow50x.ai لتقنيات الذكاء الاصطناعي الطبية</p>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-8">
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 text-xl shrink-0"><i class="fas fa-phone"></i></div>
-                            <a href="tel:+971509667197" class="text-xl font-bold hover:text-brand-600 transition-colors" dir="ltr">+971 50 966 7197</a>
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-right">
+                        <!-- Phone Link -->
+                        <a href="tel:+971509667197" class="clickable-row group" dir="ltr">
+                            <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 text-xl shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-colors"><i class="fas fa-phone"></i></div>
+                            <span class="text-xl font-bold group-hover:text-brand-600 transition-colors">+971 50 966 7197</span>
+                        </a>
                         
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 text-xl shrink-0"><i class="fas fa-globe"></i></div>
-                            <a href="https://grow50x.ai/" target="_blank" class="text-xl font-bold hover:text-brand-600 transition-colors underline">grow50x.ai</a>
-                        </div>
+                        <!-- Website Link -->
+                        <a href="https://grow50x.ai/" target="_blank" class="clickable-row group">
+                            <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 text-xl shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-colors"><i class="fas fa-globe"></i></div>
+                            <span class="text-xl font-bold group-hover:text-brand-600 transition-colors underline">grow50x.ai</span>
+                        </a>
 
-                        <div class="flex items-center gap-4">
-                            <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 text-xl shrink-0"><i class="fas fa-desktop"></i></div>
-                            <a href="https://aestheticsim-ai.web.app" target="_blank" class="text-xl font-bold hover:text-brand-600 transition-colors underline">بوابة تسجيل الدخول</a>
-                        </div>
+                        <!-- Portal Link -->
+                        <a href="https://aestheticsim-ai.web.app" target="_blank" class="clickable-row group">
+                            <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 text-xl shrink-0 group-hover:bg-brand-600 group-hover:text-white transition-colors"><i class="fas fa-desktop"></i></div>
+                            <span class="text-xl font-bold group-hover:text-brand-600 transition-colors underline">بوابة تسجيل الدخول</span>
+                        </a>
 
-                        <div class="flex items-center gap-4">
+                        <!-- Address (Non-clickable just display) -->
+                        <div class="clickable-row cursor-default">
                             <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center text-brand-600 text-xl shrink-0"><i class="fas fa-map-marker-alt"></i></div>
                             <span class="text-xl font-bold text-gray-700">In5 Tech - دبي - الإمارات</span>
                         </div>
